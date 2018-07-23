@@ -143,6 +143,7 @@ namespace AMF.Tools
                     ImplementationControllersFolder = RamlReferenceReader.GetImplementationControllersFolder(refFilePath),
                     AddGeneratedSuffixToFiles = RamlReferenceReader.GetAddGeneratedSuffix(refFilePath)
                 };
+                parameters.Data = RamlInfoService.GetRamlInfo(ramlFile).GetAwaiter().GetResult();
                 service.Scaffold(ramlFile, parameters);
             }
         }

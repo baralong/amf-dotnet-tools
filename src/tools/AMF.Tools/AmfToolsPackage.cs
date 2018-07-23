@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+using System.Threading;
 using AMF.Common;
 using Caliburn.Micro;
 using EnvDTE;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
@@ -26,17 +28,53 @@ namespace AMF.Tools
     /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
     /// </para>
     /// </remarks>
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    //[PackageRegistration(UseManagedResourcesOnly = true)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string, PackageAutoLoadFlags.BackgroundLoad)]
     [InstalledProductRegistration("#1110", "#1112", "1.0", IconResourceID = 1400)] // Info on this package for Help/About
     [Guid(AmfToolsPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
-    public sealed class AmfToolsPackage : Package
+    public sealed class AmfToolsPackage : AsyncPackage
     {
         /// <summary>
         /// VSPackage1 GUID string.
         /// </summary>
         public const string PackageGuidString = "d24cb627-9b37-4ac3-aec3-aba333e88419";
 
+        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            bool isSolutionLoaded = await IsSolutionLoadedAsync();
+
+            if (isSolutionLoaded)
+            {
+                HandleOpenSolution();
+            }
+
+            Microsoft.VisualStudio.Shell.Events.SolutionEvents.OnAfterOpenSolution += HandleOpenSolution;
+        }
+
+        private async System.Threading.Tasks.Task<bool> IsSolutionLoadedAsync()
+        {
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
+            var solService = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
+
+            ErrorHandler.ThrowOnFailure(solService.GetProperty((int)__VSPROPID.VSPROPID_IsSolutionOpen, out object value));
+
+            return value is bool isSolOpen && isSolOpen;
+        }
+
+        private void HandleOpenSolution(object sender = null, EventArgs e = null)
+        {
+            AddContractCommand.Initialize(this);
+            AddReferenceCommand.Initialize(this);
+            EditPropertiesCommand.Initialize(this);
+            ExtractRAMLCommand.Initialize(this);
+
+            // trigger scaffold when RAML document gets saved
+            var dte = ServiceProvider.GlobalProvider.GetService(typeof(SDTE)) as DTE;
+            events = dte.Events;
+            documentEvents = events.DocumentEvents;
+            documentEvents.DocumentSaved += DocumentEventsOnDocumentSaved;
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="AmfToolsPackage"/> class.
         /// </summary>
@@ -79,21 +117,21 @@ namespace AMF.Tools
         /// Initialization of the package; this method is called right after the package is sited, so this is the place
         /// where you can put all the initialization code that rely on services provided by VisualStudio.
         /// </summary>
-        protected override void Initialize()
-        {
-            base.Initialize();
-            AddContractCommand.Initialize(this);
-            AddReferenceCommand.Initialize(this);
-            EditPropertiesCommand.Initialize(this);
-            ExtractRAMLCommand.Initialize(this);
+        //protected override void Initialize()
+        //{
+        //    base.Initialize();
+        //    AddContractCommand.Initialize(this);
+        //    AddReferenceCommand.Initialize(this);
+        //    EditPropertiesCommand.Initialize(this);
+        //    ExtractRAMLCommand.Initialize(this);
 
-            // trigger scaffold when RAML document gets saved
-            var dte = ServiceProvider.GlobalProvider.GetService(typeof(SDTE)) as DTE;
-            events = dte.Events;
-            documentEvents = events.DocumentEvents;
-            documentEvents.DocumentSaved += DocumentEventsOnDocumentSaved;
+        //    // trigger scaffold when RAML document gets saved
+        //    var dte = ServiceProvider.GlobalProvider.GetService(typeof(SDTE)) as DTE;
+        //    events = dte.Events;
+        //    documentEvents = events.DocumentEvents;
+        //    documentEvents.DocumentSaved += DocumentEventsOnDocumentSaved;
 
-        }
+        //}
 
         #endregion
 

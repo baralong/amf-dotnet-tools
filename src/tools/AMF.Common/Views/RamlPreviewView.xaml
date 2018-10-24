@@ -6,7 +6,7 @@
 				 x:Class="AMF.Common.Views.RamlPreviewView"
 				 x:Name="RamlPreviewWindow"
                  Background="Gainsboro"
-                 Title="Import RAML/OAS"
+                 Title="Import RAML"
 				 Width="545"
 				 ResizeMode="CanMinimize" 
                  WindowStartupLocation="CenterScreen">
@@ -316,7 +316,7 @@
             </Grid.ColumnDefinitions>
 
 
-            <Label Content="Preview RAML/OAS"
+            <Label Content="Preview RAML"
                            Visibility="{Binding NewContractVisibility}"
                            FontSize="13"
 						   Margin="0,5,0,0"

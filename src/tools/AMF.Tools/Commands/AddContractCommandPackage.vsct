@@ -57,7 +57,7 @@
         <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Add RAML/OAS Contract...</ButtonText>
+          <ButtonText>Add RAML Contract...</ButtonText>
         </Strings>
       </Button>
     </Buttons>

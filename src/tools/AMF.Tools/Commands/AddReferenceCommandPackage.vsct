@@ -56,7 +56,7 @@
         <Parent guid="guidAddReferenceCommandPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
-          <ButtonText>Add RAML/OAS Reference...</ButtonText>
+          <ButtonText>Add RAML Reference...</ButtonText>
         </Strings>
       </Button>
     </Buttons>

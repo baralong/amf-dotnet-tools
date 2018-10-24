@@ -157,7 +157,7 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <RadioButton Content="New RAML/OAS contract"
+                <RadioButton Content="New RAML contract"
 							 x:Name="IsNewRamlOption"
                              Visibility="{Binding ContractUseCaseVisibility}"
 							 Style="{StaticResource DefaultRadioButton}"
@@ -198,7 +198,7 @@
 
 
 
-                <RadioButton Content="Existing RAML/OAS contract"
+                <RadioButton Content="Existing RAML contract"
 							 x:Name="ExistingRamlOption"
 							 Style="{StaticResource DefaultRadioButton}"
 							 Visibility="{Binding ContractUseCaseVisibility}"
@@ -214,7 +214,7 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0"
+                    <Button Grid.Column="0" IsEnabled="False"
                             Style="{StaticResource BigButton}"
 							x:Name="AddExistingRamlFromExchange">
                         <Grid>
@@ -257,7 +257,7 @@
                 </Grid>
 
 
-                <Label Content="Or enter the URL of a RAML/OAS definition:"
+                <Label Content="Or enter the URL of a RAML definition:"
 							   Style="{StaticResource DefaultLabel}"
                                Margin="0,4,0,4"
                                Grid.Row="5" />

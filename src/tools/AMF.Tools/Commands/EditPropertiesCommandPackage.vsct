@@ -57,7 +57,7 @@
         <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
-          <ButtonText>Edit RAML/OAS Properties...</ButtonText>
+          <ButtonText>Edit RAML Properties...</ButtonText>
         </Strings>
       </Button>
     </Buttons>

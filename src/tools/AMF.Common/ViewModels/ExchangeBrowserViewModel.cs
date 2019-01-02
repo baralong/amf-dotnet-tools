@@ -49,8 +49,7 @@ namespace AMF.Common.ViewModels
             if (e.AddedItems.Count != 1)
                 return;
 
-            var selected = e.AddedItems[0] as ExchangeAsset;
-            if (selected == null)
+            if (!(e.AddedItems[0] is ExchangeAsset selected))
                 return;
 
             ExchangeAsset selectedAsset = selected;
@@ -122,17 +121,18 @@ namespace AMF.Common.ViewModels
             get => !IsLoggedIn;
         }
 
-        public async void Login()
+        public async Task Login()
         {
-            var loginViewModel = new LoginViewModel();
+            //var loginViewModel = new LoginViewModel();
+            var loginViewModel = new LoginDomainViewModel();
             WindowManager.ShowDialog(loginViewModel);
 
-            if (loginViewModel.Token != null)
-            {
-                AccessToken = loginViewModel.Token;
-                Username = loginViewModel.Username;
-                await GetProductsAsync(SearchText); //reload with token
-            }
+            //if (loginViewModel.Token != null)
+            //{
+            //    AccessToken = loginViewModel.Token;
+            //    Username = loginViewModel.Username;
+            //    await GetProductsAsync(SearchText); //reload with token
+            //}
         }
 
         public class ExchangeAsset

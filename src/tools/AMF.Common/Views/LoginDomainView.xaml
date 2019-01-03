@@ -91,7 +91,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <WebBrowser HorizontalAlignment="Center" Height="400"  VerticalAlignment="Top" Width="400" Source="https://anypoint.mulesoft.com//accounts/oauth2/authorize/anypoint-platform" />
+        <WebBrowser HorizontalAlignment="Center" Height="400"  VerticalAlignment="Top" Width="400" Source="C:\desarrollo\mulesoft\amf-dotnet-tools\src\tools\AMF.Common\Views\standalone-example.html" />
 
 
 
